@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Scraping Results</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    .eventos {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 15px;
+    }
+
+    .titulo {
+      font-size: 18px;
+      font-weight: bold;
+      color: #007BFF;
+    }
+
+    .descripcion {
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    .fecha-hora {
+      color: #6C757D;
+    }
+  </style>
+</head>
+<body>
+  <h1>Web Scraping Results</h1>
+  <div id="results"></div>
+
+  <script>
+    // Función para realizar la solicitud a la API y mostrar los resultados en la página
+    async function obtenerYMostrarResultados() {
+      try {
+        const response = await fetch('http://localhost:3000/');
+        const resultados = await response.json();
+
+        // Mostrar los resultados en la página
+        mostrarResultados(resultados);
+      } catch (error) {
+        console.error('Error al obtener los resultados:', error);
+      }
+    }
+
+    // Función para mostrar los resultados en la página
+    function mostrarResultados(resultados) {
+      const resultsContainer = document.getElementById("results");
+
+      resultados.eventos.forEach(eventos => {
+        const eventosElement = document.createElement("div");
+        eventosElement.classList.add("eventos");
+
+        const tituloElement = document.createElement("div");
+        tituloElement.classList.add("titulo");
+        tituloElement.textContent = eventos.titulo;
+
+        const descripcionElement = document.createElement("div");
+        descripcionElement.classList.add("descripcion");
+        descripcionElement.textContent = eventos.descripcion;
+
+        const fechaHoraElement = document.createElement("div");
+        fechaHoraElement.classList.add("fecha-hora");
+        fechaHoraElement.textContent = eventos.fechaHora;
+
+        eventosElement.appendChild(tituloElement);
+        eventosElement.appendChild(descripcionElement);
+        eventosElement.appendChild(fechaHoraElement);
+
+        resultsContainer.appendChild(eventosElement);
+      });
+    }
+
+    // Llamar a la función para obtener y mostrar resultados al cargar la página
+    window.onload = obtenerYMostrarResultados;
+  </script>
+</body>
+</html>
